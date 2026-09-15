@@ -103,6 +103,31 @@ UI.TextEdit(storage.hasteSpell or "utani hur", function(widget, newText)
   storage.hasteSpell = newText
 end)
 
+macro(500, "hunt - haste", function() 
+  if hasHaste() then return end
+
+  local pos = player:getPosition()
+
+  if storage.lastPosition == nil then
+    storage.lastPosition = pos
+    return
+  end
+
+  if storage.lastPosition.x == pos.x
+  and storage.lastPosition.y == pos.y
+  and storage.lastPosition.z == pos.z then
+    return
+  end
+
+  storage.lastPosition = pos
+
+  if TargetBot then 
+    TargetBot.saySpell(storage.hasteSpell) -- sync spell with targetbot if available
+  else
+    say(storage.hasteSpell)
+  end
+end)
+
 macro(500, "haste", function() 
   if hasHaste() then return end
   if TargetBot then 
@@ -119,6 +144,31 @@ end)
 
 macro(100, "anti paralyze", function() 
   if not isParalyzed() then return end
+  if TargetBot then 
+    TargetBot.saySpell(storage.antiParalyze) -- sync spell with targetbot if available
+  else
+    say(storage.antiParalyze)
+  end
+end)
+
+macro(100, "hunt - anti paralyze", function() 
+  if not isParalyzed() then return end
+
+  local pos = player:getPosition()
+
+  if storage.lastPosition == nil then
+    storage.lastPosition = pos
+    return
+  end
+
+  if storage.lastPosition.x == pos.x
+  and storage.lastPosition.y == pos.y
+  and storage.lastPosition.z == pos.z then
+    return
+  end
+
+  storage.lastPosition = pos
+
   if TargetBot then 
     TargetBot.saySpell(storage.antiParalyze) -- sync spell with targetbot if available
   else
