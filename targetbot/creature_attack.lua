@@ -83,11 +83,18 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
       end
     end
   end
-  if config.useSpellAttack and config.attackSpell:len() > 1 and mana > config.minMana then
-    if creature and creature:isMonster() and creature:getHealthPercent() < 10 then
-      if TargetBot.sayAttackSpell(config.attackSpell, config.attackSpellDelay) then
-        return
-      end
+  if config.useSpellAttack
+      and config.attackSpell:len() > 1
+      and mana > config.minMana
+      and g_game.getAttackingCreature()
+      and g_game.getAttackingCreature():isMonster()
+      and storage.isChasing then
+
+    if TargetBot.sayAttackSpell(
+        config.attackSpell,
+        config.attackSpellDelay
+      ) then
+      return
     end
   end
   if config.useRuneAttack and config.attackRune > 100 then
@@ -126,9 +133,11 @@ TargetBot.Creature.walk = function(creature, config, targets)
     end
   end
 
+  storage.isChasing = false
   local currentDistance = findPath(pos, cpos, 10, {ignoreCreatures=true, ignoreNonPathable=true, ignoreCost=true})
   if config.chase and (creature:getHealthPercent() < 30 or not config.keepDistance) then
     if #currentDistance > 1 then
+      storage.isChasing = true
       return TargetBot.walkTo(cpos, 10, {ignoreNonPathable=true, precision=1})
     end
   elseif config.keepDistance then

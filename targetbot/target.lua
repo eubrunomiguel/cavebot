@@ -77,7 +77,7 @@ targetbotMacro = macro(100, function()
     elseif cavebotAllowance > now then
       TargetBot.setStatus("Luring using CaveBot")
     else
-      TargetBot.setStatus("Attacking")
+      TargetBot.setStatus(storage.isChasing and "Chasing" or "Attacking")
       if not lureEnabled then
         TargetBot.setStatus("Attacking (luring off)")      
       end
