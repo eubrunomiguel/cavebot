@@ -117,6 +117,14 @@ local function updateDepositProfit()
   end
 end
 
+-- shortcut in calculating distance from local player position
+-- needs only one argument
+-- returns number
+function distanceFromPlayer(coords)
+    if not coords then return false end
+    return getDistanceBetween(pos(), coords)
+end
+
 TargetBot.Looting.getStatus = function()
   return status
 end
