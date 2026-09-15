@@ -102,7 +102,7 @@ TargetBot.Looting.process = function(targets, dangerLevel)
     TargetBot.Looting.list = {}
     return false
   end
-  local loot = TargetBot.Looting.list[1]
+  local loot = TargetBot.Looting.list[#TargetBot.Looting.list]
   if loot == nil then
     status = ""
     return false
@@ -132,8 +132,8 @@ TargetBot.Looting.process = function(targets, dangerLevel)
 
   local pos = player:getPosition()
   local dist = math.max(math.abs(pos.x-loot.pos.x), math.abs(pos.y-loot.pos.y))
-  if loot.tries > 30 or loot.pos.z ~= pos.z or dist > 20 then
-    table.remove(TargetBot.Looting.list, 1)
+  if loot.tries > 30 or loot.pos.z ~= pos.z or dist > 40 then
+    table.remove(TargetBot.Looting.list, #TargetBot.Looting.list)
     return true
   end
 
@@ -146,14 +146,13 @@ TargetBot.Looting.process = function(targets, dangerLevel)
 
   local container = tile:getTopUseThing()
   if not container or not container:isContainer() then
-    table.remove(TargetBot.Looting.list, 1)
+    table.remove(TargetBot.Looting.list, #TargetBot.Looting.list)
     return true
   end
 
   g_game.open(container)
-  waitTill = now + 1000 -- give it 1s to open
+  waitTill = now + 200 -- give it 0.2s to open
   waitingForContainer = container:getId()
-  loot.tries = loot.tries + 10
 
   return true
 end
@@ -234,9 +233,9 @@ TargetBot.Looting.lootContainer = function(lootContainers, container)
   -- no more items to loot, open next container
   if nextContainer then
     nextContainer.lootTries = (nextContainer.lootTries or 0) + 1
-    if nextContainer.lootTries < 5 then -- max 0.5s to open it
+    if nextContainer.lootTries < 2 then -- max 0.6s to open it
       g_game.open(nextContainer, container)
-      waitTill = now + 500 -- give it 0.5s to open
+      waitTill = now + 300 -- give it 0.3s to open
       waitingForContainer = nextContainer:getId()
       return
     end
@@ -245,8 +244,16 @@ TargetBot.Looting.lootContainer = function(lootContainers, container)
   -- looting finished, remove container from list
   container.lootContainer = false
   g_game.close(container)
-  table.remove(TargetBot.Looting.list, 1) 
+  table.remove(TargetBot.Looting.list, #TargetBot.Looting.list) 
 end
+
+onTextMessage(function(mode, text)
+  if TargetBot.isOff() then return end
+  if #TargetBot.Looting.list == 0 then return end
+  if string.find(text:lower(), "you are not the owner") then -- if we are not the owners of corpse then its a waste of time to try to loot it
+    table.remove(TargetBot.Looting.list, #TargetBot.Looting.list)
+  end
+end)
 
 TargetBot.Looting.lootItem = function(lootContainers, item)
   if item:isStackable() then
@@ -255,7 +262,7 @@ TargetBot.Looting.lootItem = function(lootContainers, item)
       for slot, citem in ipairs(container:getItems()) do
         if item:getId() == citem:getId() and citem:getCount() < 100 then
           g_game.move(item, container:getSlotPosition(slot - 1), count)
-          waitTill = now + 500 -- give it 0.5s to move item
+          waitTill = now + 300 -- give it 0.3s to move item
           return
         end
       end
@@ -264,7 +271,7 @@ TargetBot.Looting.lootItem = function(lootContainers, item)
 
   local container = lootContainers[1]
   g_game.move(item, container:getSlotPosition(container:getItemsCount()), 1)
-  waitTill = now + 500 -- give it 0.5s to move item
+  waitTill = now + 300 -- give it 0.3s to move item
 end
 
 onContainerOpen(function(container, previousContainer)
@@ -275,6 +282,7 @@ onContainerOpen(function(container, previousContainer)
 end)
 
 onCreatureDisappear(function(creature)
+  if isInPz() then return end
   if not TargetBot.isOn() then return end
   if not creature:isMonster() then return end
   local config = TargetBot.Creature.calculateParams(creature, {}) -- return {craeture, config, danger, priority}
@@ -285,7 +293,7 @@ onCreatureDisappear(function(creature)
   local mpos = creature:getPosition()
   local name = creature:getName()
   if pos.z ~= mpos.z or math.max(math.abs(pos.x-mpos.x), math.abs(pos.y-mpos.y)) > 6 then return end
-  schedule(100, function() -- check in 100ms if there's container (dead body) on that tile
+  schedule(20, function() -- check in 20ms if there's container (dead body) on that tile
     if not containers[1] then return end
     if TargetBot.Looting.list[20] then return end -- too many items to loot
     local tile = g_map.getTile(mpos)
@@ -294,6 +302,13 @@ onCreatureDisappear(function(creature)
     if not container or not container:isContainer() then return end
     if not findPath(player:getPosition(), mpos, 6, {ignoreNonPathable=true, ignoreCreatures=true, ignoreCost=true}) then return end
     table.insert(TargetBot.Looting.list, {pos=mpos, creature=name, container=container:getId(), added=now, tries=0})
+
+    table.sort(TargetBot.Looting.list, function(a,b) 
+      a.dist = distanceFromPlayer(a.pos)
+      b.dist = distanceFromPlayer(b.pos)
+
+      return a.dist > b.dist
+    end)
     container:setMarked('#000088')
   end)
 end)
