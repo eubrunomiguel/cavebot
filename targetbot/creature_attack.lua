@@ -84,8 +84,10 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
     end
   end
   if config.useSpellAttack and config.attackSpell:len() > 1 and mana > config.minMana then
-    if TargetBot.sayAttackSpell(config.attackSpell, config.attackSpellDelay) then
-      return
+    if creature and creature:isMonster() and creature:getHealthPercent() < 10 then
+      if TargetBot.sayAttackSpell(config.attackSpell, config.attackSpellDelay) then
+        return
+      end
     end
   end
   if config.useRuneAttack and config.attackRune > 100 then
