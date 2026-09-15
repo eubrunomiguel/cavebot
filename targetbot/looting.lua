@@ -85,8 +85,9 @@ local status = ""
 local lastFoodConsumption = 0
 
 local function updateDepositProfit()
-  local totalValue = 0
+  local lootValue = 0
 
+  -- Loot
   local items = {
     {id = storage.depositItem1, price = storage.depositItem1Price},
     {id = storage.depositItem2, price = storage.depositItem2Price},
@@ -97,12 +98,22 @@ local function updateDepositProfit()
   for _, item in ipairs(items) do
     if item.id and item.price then
       local count = player:getItemsCount(item.id) or 0
-      totalValue = totalValue + (count * item.price)
+      lootValue = lootValue + (count * item.price)
     end
   end
 
+  -- Fixed hunt expenses
+  local manaExpense = storage.manaTarget * 50
+  local hpExpense = storage.hpTarget * 310
+  local totalExpenses = manaExpense + hpExpense
+
+  -- Net profit
+  local profitValue = lootValue - totalExpenses
+
   if ui then
-    ui.profit:setText("Profit: " .. tostring(totalValue))
+    ui.loot:setText("Loot: " .. tostring(lootValue))
+    ui.expenses:setText("Expenses: " .. tostring(totalExpenses))
+    ui.profit:setText("Profit: " .. tostring(profitValue))
   end
 end
 
