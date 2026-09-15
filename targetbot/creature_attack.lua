@@ -20,7 +20,7 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
   if config.useGroupAttack and config.groupAttackSpell:len() > 1 and mana > config.minManaGroup then
     local pos = player:getPosition()
 
-    -- Only count monsters within the configured attack radius
+    -- Count monsters within the configured attack radius
     local creatures = g_map.getSpectatorsInRange(
       pos,
       false,
@@ -36,8 +36,9 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
       end
     end
 
-    -- Check for players within 7 tiles
-    -- Ignore White and Red skull players
+    -- Do not use group attack if ANY other player is nearby
+    local playerAround = false
+
     local nearbyCreatures = g_map.getSpectatorsInRange(
       pos,
       false,
@@ -45,22 +46,19 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
       7
     )
 
-    local playersAround = false
-
     for _, creature in ipairs(nearbyCreatures) do
       if not creature:isLocalPlayer() and creature:isPlayer() then
-        local skull = creature:getSkull()
-
-        if skull ~= SkullWhite and skull ~= SkullRed then
-          playersAround = true
-          break
-        end
+        playerAround = true
+        break
       end
     end
 
-    -- Enough monsters and no relevant players nearby
-    if monsters >= config.groupAttackTargets and not playersAround then
-      if TargetBot.sayAttackSpell(config.groupAttackSpell, config.groupAttackDelay) then
+    -- Enough monsters and no players nearby
+    if monsters >= config.groupAttackTargets and not playerAround then
+      if TargetBot.sayAttackSpell(
+          config.groupAttackSpell,
+          config.groupAttackDelay
+        ) then
         return
       end
     end
