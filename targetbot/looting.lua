@@ -84,6 +84,28 @@ local waitingForContainer = nil
 local status = ""
 local lastFoodConsumption = 0
 
+local function updateDepositProfit()
+  local totalValue = 0
+
+  local items = {
+    {id = storage.depositItem1, price = storage.depositItem1Price},
+    {id = storage.depositItem2, price = storage.depositItem2Price},
+    {id = storage.depositItem3, price = storage.depositItem3Price},
+    {id = storage.depositItem4, price = storage.depositItem4Price}
+  }
+
+  for _, item in ipairs(items) do
+    if item.id and item.price then
+      local count = player:getItemsCount(item.id) or 0
+      totalValue = totalValue + (count * item.price)
+    end
+  end
+
+  if ui then
+    ui.profit:setText("Profit: " .. tostring(totalValue))
+  end
+end
+
 TargetBot.Looting.getStatus = function()
   return status
 end
@@ -126,6 +148,7 @@ TargetBot.Looting.process = function(targets, dangerLevel)
   for index, container in pairs(containers) do
     if container.lootContainer then
       TargetBot.Looting.lootContainer(lootContainers, container)
+      updateDepositProfit()
       return true
     end
   end

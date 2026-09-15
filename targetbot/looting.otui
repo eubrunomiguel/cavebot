@@ -7,6 +7,11 @@ TargetBotLootingPanel < Panel
     margin-top: 5
 
   Label
+    id: profit
+    text-align: center
+    !text: tr("Profit")
+
+  Label
     margin-top: 5
     text: Items to loot
     text-align: center    
