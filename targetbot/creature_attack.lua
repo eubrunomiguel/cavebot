@@ -36,7 +36,8 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
       end
     end
 
-    -- Check for ANY player within 7 tiles
+    -- Check for players within 7 tiles
+    -- Ignore White and Red skull players
     local nearbyCreatures = g_map.getSpectatorsInRange(
       pos,
       false,
@@ -48,12 +49,16 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
 
     for _, creature in ipairs(nearbyCreatures) do
       if not creature:isLocalPlayer() and creature:isPlayer() then
-        playersAround = true
-        break
+        local skull = creature:getSkull()
+
+        if skull ~= SkullWhite and skull ~= SkullRed then
+          playersAround = true
+          break
+        end
       end
     end
 
-    -- Only use group spell if enough monsters are close AND no players within 7 tiles
+    -- Enough monsters and no relevant players nearby
     if monsters >= config.groupAttackTargets and not playersAround then
       if TargetBot.sayAttackSpell(config.groupAttackSpell, config.groupAttackDelay) then
         return
