@@ -239,7 +239,7 @@ TargetBot.Looting.lootContainer = function(lootContainers, container)
       nextContainer = item
     elseif itemsById[item:getId()] or (ui.everyItem:isOn() and not item:isContainer()) then
       item.lootTries = (item.lootTries or 0) + 1
-      if item.lootTries < 5 then -- if can't be looted within 0.5s then skip it
+      if item.lootTries < 10 then -- if can't be looted within 0.5s then skip it
         return TargetBot.Looting.lootItem(lootContainers, item)
       end
     elseif storage.foodItems and storage.foodItems[1] and lastFoodConsumption + 5000 < now then
@@ -256,7 +256,7 @@ TargetBot.Looting.lootContainer = function(lootContainers, container)
   -- no more items to loot, open next container
   if nextContainer then
     nextContainer.lootTries = (nextContainer.lootTries or 0) + 1
-    if nextContainer.lootTries < 2 then -- max 0.6s to open it
+    if nextContainer.lootTries < 4 then -- max 1.2s to open it
       g_game.open(nextContainer, container)
       waitTill = now + 300 -- give it 0.3s to open
       waitingForContainer = nextContainer:getId()
