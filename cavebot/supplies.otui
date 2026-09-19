@@ -1,0 +1,81 @@
+SupplySpinBox < SpinBox
+  height: 20
+  margin-left: 3
+  width: 100
+  minimum: 0
+  maximum: 9999
+  text-align: center
+  focusable: true
+  text: 0
+
+ItemPanel < Panel
+  height: 38
+
+  BotItem
+    id: id
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+
+  SupplySpinBox
+    id: min
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+  
+  SupplySpinBox
+    id: max
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+
+  UIWidget
+    anchors.left: min.left
+    anchors.bottom: min.top
+    width: 75
+    text-align: center
+    font: verdana-11px-rounded
+    text: Min
+    tooltip: Amount of given supplies for bot to leave the spawn.
+
+  UIWidget
+    anchors.left: max.left
+    anchors.bottom: max.top
+    width: 75
+    text-align: center
+    font: verdana-11px-rounded
+    text: Max
+    tooltip: Amount of given supplies to purchase
+
+SuppliesWindow < MainWindow
+  !text: tr('Supplies')
+  size: 300 400
+  @onEscape: self:hide()
+
+
+  Panel
+    id: items
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: bottomSep.top
+    margin-left: 10
+    margin-right: 10
+    margin-bottom: 8
+    vertical-scrollbar: itemsScrollBar
+    layout: verticalBox
+
+  HorizontalSeparator
+    id: bottomSep
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: closeButton.top
+    margin-bottom: 8
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    font: cipsoftFont
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 45 21
+    margin-top: 15
+    tooltip: Close supplies window and save settings.
+    @onClick: self:getParent():hide()

@@ -162,6 +162,17 @@ ui.showConfig.onClick = function()
   end
 end
 
+ui.showSupply.onClick = function()
+  if not CaveBot.SuppliesWindow then return end
+  if ui.showSupply:isOn() then
+    CaveBot.SuppliesWindow:setVisible(false)
+    ui.showSupply:setOn(false)
+  else
+    CaveBot.SuppliesWindow:setVisible(true)
+    ui.showSupply:setOn(true)
+  end
+end
+
 -- public function, you can use them in your scripts
 CaveBot.isOn = function()
   return config.isOn()

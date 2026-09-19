@@ -10,7 +10,8 @@ CaveBot.Extensions = {}
 importStyle("/cavebot/cavebot.otui")
 importStyle("/cavebot/config.otui")
 importStyle("/cavebot/editor.otui")
-importStyle("/cavebot/supply.otui")
+importStyle("/cavebot/supplies.otui")
+dofile("/cavebot/cavebot_lib.lua")
 dofile("/cavebot/actions.lua")
 dofile("/cavebot/config.lua")
 dofile("/cavebot/editor.lua")
@@ -20,7 +21,8 @@ dofile("/cavebot/walking.lua")
 -- in this section you can add extensions, check extension_template.lua
 --dofile("/cavebot/extension_template.lua")
 dofile("/cavebot/depositer.lua")
-dofile("/cavebot/supply.lua")
+dofile("/cavebot/supplies.lua")
+dofile("/cavebot/buy_supplies.lua")
 -- main cavebot file, must be last
 dofile("/cavebot/cavebot.lua")
 

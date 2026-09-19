@@ -56,3 +56,8 @@ CaveBotPanel < Panel
       
     $!on:
       text: Show config
+
+  Button
+    id: showSupply
+    margin-top: 2
+    text: Supplies
