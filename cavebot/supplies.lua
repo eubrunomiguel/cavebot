@@ -245,22 +245,16 @@ Supplies.isSupplyItem = function(id)
   return false
 end
 
-
 Supplies.hasEnough = function()
   local data = Supplies.getItemsData()
 
   for id, values in pairs(data) do
     id = tonumber(id)
 
-    local maximum = values.max
     local current = player:getItemsCount(id) or 0
 
-    if current < maximum then
-      return {
-        id = id,
-        amount = current,
-        max = maximum
-      }
+    if current < values.min then
+      return false
     end
   end
 
