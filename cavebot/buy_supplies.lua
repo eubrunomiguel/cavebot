@@ -26,7 +26,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
     local waitVal
 
     if #val == 0 or #val > 2 then
-      warn("CaveBot[BuySupplies]: incorrect BuySupplies value")
+      warn("BuySupplies: incorrect BuySupplies value")
       return false
     elseif #val == 2 then
       waitVal = tonumber(val[2]:trim())
@@ -35,13 +35,13 @@ CaveBot.Extensions.BuySupplies.setup = function()
     local npcName = val[1]:trim()
 
     if not waitVal and #val == 2 then
-      warn("CaveBot[BuySupplies]: incorrect delay values!")
+      warn("BuySupplies: incorrect delay values!")
     elseif waitVal and #val == 2 then
       delay(waitVal)
     end
 
     if retries > 50 then
-      modules.game_textmessage.displayGameMessage("CaveBot[BuySupplies]: Too many tries, can't buy")
+      modules.game_textmessage.displayGameMessage("BuySupplies: Too many tries, can't buy")
       return false
     end
 
@@ -63,7 +63,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
 
     if not needsSupplies then
       modules.game_textmessage.displayGameMessage(
-        "CaveBot[BuySupplies]: supplies already met, skipping"
+        "BuySupplies: supplies already met, skipping"
       )
       NPC.closeTrade()
       NPC.say("bye")
@@ -72,7 +72,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
 
     local npc = getCreatureByName(npcName)
     if not npc then
-      modules.game_textmessage.displayGameMessage("CaveBot[BuySupplies]: NPC not found")
+      modules.game_textmessage.displayGameMessage("BuySupplies: NPC not found")
       return false
     end
 
@@ -106,7 +106,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
 
           NPC.buy(id, toBuy)
 
-          modules.game_textmessage.displayGameMessage("CaveBot[BuySupplies]: bought " .. toBuy .. "x " .. id)
+          modules.game_textmessage.displayGameMessage("BuySupplies: bought " .. toBuy .. "x " .. id)
           return "retry"
         end
       end
@@ -115,7 +115,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
     
     NPC.closeTrade()
     NPC.say("bye")
-    modules.game_textmessage.displayGameMessage("CaveBot[BuySupplies]: bought everything, proceeding")
+    modules.game_textmessage.displayGameMessage("BuySupplies: bought everything, proceeding")
     return true
   end)
 

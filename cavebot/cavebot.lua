@@ -233,3 +233,16 @@ CaveBot.save = function()
   table.insert(data, {"extensions", json.encode(extension_data, 2)})
   config.save(data)
 end
+
+local sellContainer = UI.Container(function(widget, items)
+  storage.cavebotSell = items
+end, true, nil, ui.sellExceptions)
+sellContainer:setHeight(70)
+sellContainer:setItems(storage.cavebotSell)
+
+macro(500, "Emergency Escape", function() 
+  if Supplies.hasEmergency() then
+    modules.game_textmessage.displayGameMessage("[Supplies]: Too little supply, turning off target bot")
+    TargetBot.setOff()
+  end
+end)

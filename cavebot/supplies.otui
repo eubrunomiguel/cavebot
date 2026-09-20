@@ -1,7 +1,7 @@
 SupplySpinBox < SpinBox
   height: 20
   margin-left: 3
-  width: 100
+  width: 75
   minimum: 0
   maximum: 9999
   text-align: center
@@ -26,6 +26,11 @@ ItemPanel < Panel
     anchors.left: prev.right
     anchors.bottom: parent.bottom
 
+  SupplySpinBox
+    id: emerg
+    anchors.left: prev.right
+    anchors.bottom: parent.bottom
+
   UIWidget
     anchors.left: min.left
     anchors.bottom: min.top
@@ -44,9 +49,18 @@ ItemPanel < Panel
     text: Max
     tooltip: Amount of given supplies to purchase
 
+  UIWidget
+    anchors.left: emerg.left
+    anchors.bottom: emerg.top
+    width: 75
+    text-align: center
+    font: verdana-11px-rounded
+    text: Emerg
+    tooltip: Amount of given supplies to disable targetting
+
 SuppliesWindow < MainWindow
   !text: tr('Supplies')
-  size: 300 400
+  size: 320 400
   @onEscape: self:hide()
 
 

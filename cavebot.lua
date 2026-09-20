@@ -18,6 +18,7 @@ dofile("/cavebot/editor.lua")
 dofile("/cavebot/example_functions.lua")
 dofile("/cavebot/recorder.lua")
 dofile("/cavebot/walking.lua")
+dofile("/cavebot/minimap.lua")
 -- in this section you can add extensions, check extension_template.lua
 --dofile("/cavebot/extension_template.lua")
 dofile("/cavebot/depositer.lua")

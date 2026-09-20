@@ -48,11 +48,21 @@ local function convertOldConfig(config)
     config.item6Max
   }
 
+  local maxes = {
+    config.item1Max,
+    config.item2Max,
+    config.item3Max,
+    config.item4Max,
+    config.item5Max,
+    config.item6Emerg
+  }
+
   for i, item in ipairs(items) do
     if item and item > 100 then
       newConfig.items[tostring(item)] = {
         min = mins[i] or 0,
-        max = maxes[i] or 0
+        max = maxes[i] or 0,
+        emerg = emergs[i] or 0
       }
     end
   end
@@ -137,7 +147,8 @@ function addItemPanel()
     -- Add new item
     config.items[tostring(id)] = {
       min = 0,
-      max = 0
+      max = 0,
+      emerg = 0
     }
 
     panel:setId(id)
@@ -160,7 +171,8 @@ local function loadSettings()
     table.insert(itemList, {
       id = id,
       min = data.min or 0,
-      max = data.max or 0
+      max = data.max or 0,
+      emerg = data.emerg or 0
     })
   end
 
@@ -174,6 +186,7 @@ local function loadSettings()
       widget.id:setItemId(tonumber(data.id))
       widget.min:setText(data.min)
       widget.max:setText(data.max)
+      widget.emerg:setText(data.emerg)
     end
   end
 end
@@ -193,10 +206,12 @@ CaveBot.SuppliesWindow.onVisibilityChange = function(widget, visible)
         local id = tostring(panel.id:getItemId())
         local min = panel.min:getValue()
         local max = panel.max:getValue()
+        local emerg = panel.emerg:getValue()
 
         config.items[id] = {
           min = min,
-          max = max
+          max = max,
+          emerg = emerg
         }
       end
     end
@@ -225,7 +240,8 @@ Supplies.getItemsData = function()
 
       t[id] = {
         min = panel.min:getValue(),
-        max = panel.max:getValue()
+        max = panel.max:getValue(),
+        emerg = panel.emerg:getValue()
       }
     end
   end
@@ -261,9 +277,23 @@ Supplies.hasEnough = function()
   return true
 end
 
-hasSupplies = Supplies.hasEnough
+Supplies.hasEmergency = function()
+  local data = Supplies.getItemsData()
 
-Supplies.addSupplyItem = function(id, min, max)
+  for id, values in pairs(data) do
+    id = tonumber(id)
+
+    local current = player:getItemsCount(id) or 0
+
+    if current < values.emerg then
+      return true
+    end
+  end
+
+  return false
+end
+
+Supplies.addSupplyItem = function(id, min, max, emerg)
   if not id then
     return
   end
@@ -279,6 +309,7 @@ Supplies.addSupplyItem = function(id, min, max)
   widget.id:setItemId(tonumber(id))
   widget.min:setText(min or 0)
   widget.max:setText(max or 0)
+  widget.emerg:setText(emerg or 0)
 end
 
 
