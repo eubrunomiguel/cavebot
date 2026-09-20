@@ -95,25 +95,12 @@ end)
 
 macro(500, "smart haste", function() 
   if hasHaste() then return end
-
-  local pos = player:getPosition()
-
-  if storage.lastPosition == nil then
-    storage.lastPosition = pos
-    return
-  end
-
-  if storage.lastPosition.x == pos.x
-  and storage.lastPosition.y == pos.y
-  and storage.lastPosition.z == pos.z then
-    return
-  end
-
-  storage.lastPosition = pos
+  if not player:isWalking() then return end
 
   local spellToUse = storage.noMonsterHasteSpell
 
   if TargetBot.isOn() then
+    local pos = player:getPosition()
     local creatures = g_map.getSpectatorsInRange(pos, false, 7, 7)
     for _, creature in ipairs(creatures) do
       if creature:isMonster() then
