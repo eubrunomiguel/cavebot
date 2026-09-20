@@ -83,21 +83,6 @@ end
 
 UI.Separator()
 
-UI.Label("Mana shield spell:")
-UI.TextEdit(storage.manaShield or "utamo vita", function(widget, newText)
-  storage.manaShield = newText
-end)
-
-local lastManaShield = 0
-macro(20, "mana shield", function() 
-  if hasManaShield() or lastManaShield + 90000 > now then return end
-  if TargetBot then 
-    TargetBot.saySpell(storage.manaShield) -- sync spell with targetbot if available
-  else
-    say(storage.manaShield)
-  end
-end)
-
 UI.Label("Haste spell:")
 UI.TextEdit(storage.hasteSpell or "utani hur", function(widget, newText)
   storage.hasteSpell = newText
