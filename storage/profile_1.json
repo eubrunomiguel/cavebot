@@ -1,14 +1,75 @@
 {
   "hpitem1": {
-    "max": 70,
+    "max": 75,
     "title": "HP%",
-    "on": true,
+    "on": false,
     "item": 7643,
     "subType": 0,
     "min": 0
   },
+  "noMonsterHasteSpell": "utani tempo hur",
+  "foodItems": [
+    {
+      "count": 1,
+      "id": 3582
+    },
+    {
+      "count": 1,
+      "id": 3577
+    },
+    {
+      "count": 100,
+      "id": 3725
+    },
+    {
+      "count": 24,
+      "id": 3729
+    },
+    {
+      "count": 3,
+      "id": 3583
+    }
+  ],
+  "healing2": {
+    "max": 50,
+    "title": "HP%",
+    "on": false,
+    "min": 0,
+    "text": "exura vita"
+  },
+  "isChasing": true,
+  "hpEmergency": 50,
+  "hasteSpell": "utani hur",
+  "manaitem2": {
+    "max": 50,
+    "title": "MP%",
+    "on": false,
+    "item": 3157,
+    "subType": 0,
+    "min": 0
+  },
+  "hpHuntMin": 100,
+  "manaitem1": {
+    "max": 49,
+    "title": "MP%",
+    "on": false,
+    "item": 268,
+    "subType": 0,
+    "min": 0
+  },
+  "hpitem2": {
+    "max": 75,
+    "title": "HP%",
+    "on": false,
+    "item": 239,
+    "subType": 0,
+    "min": 0
+  },
+  "depositItem2Price": 15000,
+  "emergencySpell": "utani tempo hur",
   "manaId": 268,
-  "hp": 2,
+  "hpId": 7643,
+  "manaEmergency": 50,
   "autoEquip": [
     {
       "item1": 3052,
@@ -39,90 +100,66 @@
       "slot": 0
     }
   ],
-  "healing2": {
-    "max": 50,
-    "title": "HP%",
-    "on": false,
-    "min": 0,
-    "text": "exura vita"
-  },
-  "_macros": {
-    "": false,
-    "Send message on trade": false,
-    "Disable Target On Low Mana": true,
-    "drop items": false,
-    "Soft": true,
-    "eat food": true,
-    "anti paralyze": true,
-    "Depot Depositor": false,
-    "Disable Target On Low Pot": false,
-    "haste": true,
-    "Exchange money": true,
-    "Anti Kick": false,
-    "Stack items": true,
-    "Emergency Escape": false
+  "lastPosition": {
+    "y": 32229,
+    "x": 32345,
+    "z": 7
   },
   "antiParalyze": "utani hur",
-  "depositItem1": 3428,
-  "depositItem4": 3392,
-  "ingame_macros": "macro(60000, \"Soft\",  function()\n  say(\"!soft\")\nend)\n\nmacro(5000, \"Emergency Escape\", function()\n\n  if not storage.manaId\n  or not storage.hpId\n  or not storage.manaEmergency\n  or not storage.hpEmergency\n  or not storage.emergencySpell then\n    return\n  end\n\n  if player:getItemsCount(storage.manaId) < storage.manaEmergency\n  or player:getItemsCount(storage.hpId) < storage.hpEmergency then\n\n    say(storage.emergencySpell)\n  end\nend)",
-  "hasteSpell": "utani hur",
-  "foodItems": [
+  "hp": 2,
+  "cavebotSell": [
     {
       "count": 1,
-      "id": 3582
+      "id": 3457
+    },
+    {
+      "count": 30,
+      "id": 3192
     },
     {
       "count": 1,
-      "id": 3577
-    },
-    {
-      "count": 100,
-      "id": 3725
-    },
-    {
-      "count": 24,
-      "id": 3729
+      "id": 3053
     },
     {
       "count": 3,
-      "id": 3583
+      "id": 3043
     }
   ],
-  "manaitem2": {
-    "max": 50,
-    "title": "MP%",
-    "on": false,
-    "item": 3157,
-    "subType": 0,
-    "min": 0
-  },
+  "ingame_macros": "macro(56000, \"Soft\",  function()\n  say(\"!soft\")\nend)\n\nmacro(60000, \"Bless\",  function()\n  say(\"!bless\")\nend)\n\nmacro(64000, \"Cast\",  function()\n  say(\"!cast on\")\nend)",
+  "manaShield": "utamo vita",
+  "depositItem3Price": 40000,
   "depositItem3": 3386,
+  "depositItem1Price": 8000,
   "_configs": {
     "cavebot_configs": {
       "enabled": false,
-      "selected": "frost_oken"
+      "selected": "oken_frost"
     },
     "targetbot_configs": {
       "enabled": false,
-      "selected": "config_name"
+      "selected": "knight"
     }
   },
   "healing1": {
-    "max": 81,
+    "max": 50,
     "title": "HP%",
-    "on": false,
+    "on": true,
     "min": 0,
     "text": "exana mort"
   },
-  "hpTarget": 300,
-  "manaTrain": {
-    "max": 100,
-    "title": "MP%",
-    "on": false,
-    "min": 0,
-    "text": "utevo lux"
+  "SuppliesConfig": {
+    "supplies": {
+      "currentProfile": "Default",
+      "Default": {
+        "items": [
+
+        ]
+      }
+    }
   },
+  "depositItem4Price": 30000,
+  "autoTradeMessage": "Buy Dark Trinity Mace or Demonbone",
+  "manaHuntMin": 350,
   "dropItems": [
     {
       "id": 283,
@@ -137,27 +174,38 @@
       "count": 1
     }
   ],
-  "manaHuntMin": 300,
-  "hpHuntMin": 100,
-  "manaTarget": 900,
-  "manaitem1": {
-    "max": 49,
+  "depositItem2": 7402,
+  "hpTarget": 500,
+  "depositItem4": 3392,
+  "_macros": {
+    "": false,
+    "Bless": false,
+    "Disable Target On Low Mana": true,
+    "anti paralyze": false,
+    "hunt - haste": false,
+    "Emergency Escape": false,
+    "Send message on trade": true,
+    "Disable Target On Low Pot": false,
+    "Soft": false,
+    "drop items": false,
+    "Stack items": true,
+    "eat food": true,
+    "haste": false,
+    "Debug Skulls": false,
+    "Depot Depositor": false,
+    "hunt - anti paralyze": false,
+    "Exchange money": true,
+    "Anti Kick": false,
+    "Cast": false,
+    "Utani Tempo Hur": false
+  },
+  "manaTarget": 2000,
+  "depositItem1": 3428,
+  "manaTrain": {
+    "max": 100,
     "title": "MP%",
-    "on": true,
-    "item": 268,
-    "subType": 0,
-    "min": 0
-  },
-  "hpitem2": {
-    "max": 75,
-    "title": "HP%",
     "on": false,
-    "item": 239,
-    "subType": 0,
-    "min": 0
-  },
-  "manaShield": "utamo vita",
-  "autoTradeMessage": "I'm using OTClientV8!",
-  "hpId": 7643,
-  "depositItem2": 7402
+    "min": 0,
+    "text": "utevo lux"
+  }
 }

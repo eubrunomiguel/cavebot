@@ -72,7 +72,7 @@
     {
       "useSpellAttack": true,
       "useRuneAttack": false,
-      "minMana": 83,
+      "minMana": 40,
       "avoidAttacks": false,
       "groupAttackTargets": 2,
       "groupAttackSpell": "exori gran",

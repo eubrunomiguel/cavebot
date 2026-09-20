@@ -72,7 +72,7 @@
     },
     "targetbot_configs": {
       "enabled": false,
-      "selected": "config_name"
+      "selected": "knight"
     }
   },
   "healing1": {
