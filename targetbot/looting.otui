@@ -8,24 +8,6 @@ TargetBotLootingPanel < Panel
 
   Label
     margin-top: 5
-    id: expenses
-    text-align: center
-    !text: tr("Expenses")
-
-  Label
-    margin-top: 5
-    id: loot
-    text-align: center
-    !text: tr("Loot")
-
-  Label
-    margin-top: 5
-    id: profit
-    text-align: center
-    !text: tr("Profit")
-
-  Label
-    margin-top: 5
     text: Items to loot
     text-align: center    
 

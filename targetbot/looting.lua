@@ -84,39 +84,6 @@ local waitingForContainer = nil
 local status = ""
 local lastFoodConsumption = 0
 
-local function updateDepositProfit()
-  local lootValue = 0
-
-  -- Loot
-  local items = {
-    {id = storage.depositItem1, price = storage.depositItem1Price},
-    {id = storage.depositItem2, price = storage.depositItem2Price},
-    {id = storage.depositItem3, price = storage.depositItem3Price},
-    {id = storage.depositItem4, price = storage.depositItem4Price}
-  }
-
-  for _, item in ipairs(items) do
-    if item.id and item.price then
-      local count = player:getItemsCount(item.id) or 0
-      lootValue = lootValue + (count * item.price)
-    end
-  end
-
-  -- Fixed hunt expenses
-  local manaExpense = storage.manaTarget * 50
-  local hpExpense = storage.hpTarget * 310
-  local totalExpenses = manaExpense + hpExpense
-
-  -- Net profit
-  local profitValue = lootValue - totalExpenses
-
-  if ui then
-    ui.loot:setText("Loot: " .. tostring(lootValue))
-    ui.expenses:setText("Expenses: " .. tostring(totalExpenses))
-    ui.profit:setText("Profit: " .. tostring(profitValue))
-  end
-end
-
 -- shortcut in calculating distance from local player position
 -- needs only one argument
 -- returns number
@@ -167,7 +134,6 @@ TargetBot.Looting.process = function(targets, dangerLevel)
   for index, container in pairs(containers) do
     if container.lootContainer then
       TargetBot.Looting.lootContainer(lootContainers, container)
-      updateDepositProfit()
       return true
     end
   end
