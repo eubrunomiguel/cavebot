@@ -18,7 +18,7 @@ end
 
 -- create 2 healing widgets
 for _, healingInfo in ipairs({storage.healing1, storage.healing2}) do
-  local healingmacro = macro(1000, function() -- Bruno from 20 to 100
+  local healingmacro = macro(200, function()
     local hp = player:getHealthPercent()
     if healingInfo.max >= hp and hp >= healingInfo.min then
       if TargetBot then 
@@ -54,7 +54,7 @@ if type(storage.manaitem2) ~= "table" then
 end
 
 for i, healingInfo in ipairs({storage.hpitem1, storage.hpitem2, storage.manaitem1, storage.manaitem2}) do
-  local healingmacro = macro(1000, function() -- Bruno from 20 to 100
+  local healingmacro = macro(200, function()
     local hp = i <= 2 and player:getHealthPercent() or math.min(100, math.floor(100 * (player:getMana() / player:getMaxMana())))
     if healingInfo.max >= hp and hp >= healingInfo.min then
       if TargetBot then 
