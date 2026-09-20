@@ -495,7 +495,7 @@ end
 -- @return void
 function CaveBot.Conversation(...)
     local expressions = {...}
-    local delay = 1000
+    local delay = CaveBot.Config.get("talkDelay") or 1000
 
     local talkDelay = 0
     for i, expr in ipairs(expressions) do

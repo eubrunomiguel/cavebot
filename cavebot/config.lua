@@ -16,6 +16,8 @@ CaveBot.Config.setup = function()
   add("ignoreFields", "Ignore fields", false)  
   add("skipBlocked", "Skip blocked path", false)  
   add("useDelay", "Delay after use", 400)
+  add("talkDelay", "Talk delay", 1000)
+  add("npcSellDelay", "NPC sell delay", true)
 end
 
 CaveBot.Config.show = function()

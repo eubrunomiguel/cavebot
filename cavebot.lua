@@ -24,6 +24,10 @@ dofile("/cavebot/minimap.lua")
 dofile("/cavebot/depositer.lua")
 dofile("/cavebot/supplies.lua")
 dofile("/cavebot/buy_supplies.lua")
+dofile("/cavebot/sell_all.lua")
+dofile("/cavebot/supply_then.lua")
+dofile("/cavebot/no_supply_then.lua")
+dofile("/cavebot/target_set.lua")
 -- main cavebot file, must be last
 dofile("/cavebot/cavebot.lua")
 

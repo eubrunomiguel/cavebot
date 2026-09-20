@@ -61,3 +61,12 @@ CaveBotPanel < Panel
     id: showSupply
     margin-top: 2
     text: Supplies
+
+  Label
+    margin-top: 5
+    text: Sell exceptions
+    text-align: center    
+
+  BotContainer
+    id: sellExceptions
+    margin-top: 3
