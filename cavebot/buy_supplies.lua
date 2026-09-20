@@ -19,7 +19,7 @@ CaveBot.Extensions.BuySupplies.onConfigChange = function(name, enabled, data)
 end
 
 CaveBot.Extensions.BuySupplies.setup = function()
-  CaveBot.registerAction("BuySupplies", "#C300FF", function(value, retries)
+  CaveBot.registerAction("BuySupplies", "#62ff6f", function(value, retries)
     local possibleItems = {}
 
     local val = string.split(value, ",")
