@@ -88,7 +88,12 @@ UI.TextEdit(storage.hasteSpell or "utani hur", function(widget, newText)
   storage.hasteSpell = newText
 end)
 
-macro(500, "hunt - haste", function() 
+UI.Label("No Monster Haste spell:")
+UI.TextEdit(storage.noMonsterHasteSpell or "utani tempo hur", function(widget, newText)
+  storage.noMonsterHasteSpell = newText
+end)
+
+macro(500, "smart haste", function() 
   if hasHaste() then return end
 
   local pos = player:getPosition()
@@ -106,14 +111,26 @@ macro(500, "hunt - haste", function()
 
   storage.lastPosition = pos
 
+  local spellToUse = storage.noMonsterHasteSpell
+
+  if TargetBot.isOn() then
+    local creatures = g_map.getSpectatorsInRange(pos, false, 7, 7)
+    for _, creature in ipairs(creatures) do
+      if creature:isMonster() then
+        spellToUse = storage.hasteSpell
+        break
+      end
+    end
+  end
+
   if TargetBot then 
-    TargetBot.saySpell(storage.hasteSpell) -- sync spell with targetbot if available
+    TargetBot.saySpell(spellToUse) -- sync spell with targetbot if available
   else
-    say(storage.hasteSpell)
+    say(spellToUse)
   end
 end)
 
-macro(500, "haste", function() 
+macro(500, "yolo haste", function() 
   if hasHaste() then return end
   if TargetBot then 
     TargetBot.saySpell(storage.hasteSpell) -- sync spell with targetbot if available
