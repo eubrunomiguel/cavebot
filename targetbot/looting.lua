@@ -8,12 +8,30 @@ local itemsById = {}
 local containersById = {}
 local dontSave = false
 
+local smartLootEnabled = false
+local smartLootLastMessage = 0
+local SMART_LOOT_WINDOW_MS = 800
+
+local function updateSmartLoot(matched)
+  if not matched and smartLootEnabled and now - smartLootLastMessage <= SMART_LOOT_WINDOW_MS then
+    return smartLootEnabled
+  end
+
+  smartLootLastMessage = now
+  smartLootEnabled = matched
+  return smartLootEnabled
+end
+
 TargetBot.Looting.setup = function()
   ui = UI.createWidget("TargetBotLootingPanel")
   UI.Container(TargetBot.Looting.onItemsUpdate, true, nil, ui.items)
   UI.Container(TargetBot.Looting.onContainersUpdate, true, nil, ui.containers) 
   ui.everyItem.onClick = function()
     ui.everyItem:setOn(not ui.everyItem:isOn())
+    TargetBot.save()
+  end
+  ui.smartLootingPanel.value.onTextChange = function()
+    ui.smartLootingPanel.value:setText(ui.smartLootingPanel.value:getText():lower():trim())
     TargetBot.save()
   end
   ui.maxDangerPanel.value.onTextChange = function()
@@ -53,6 +71,7 @@ TargetBot.Looting.update = function(data)
   ui.containers:setItems(data['containers'] or {})
   ui.everyItem:setOn(data['everyItem'])
   ui.maxDangerPanel.value:setText(data['maxDanger'] or 10)
+  ui.smartLootingPanel.value:setText(data['smartLooting'] or "")
   ui.minCapacityPanel.value:setText(data['minCapacity'] or 100)
   TargetBot.Looting.updateItemsAndContainers()
   dontSave = false
@@ -62,6 +81,7 @@ TargetBot.Looting.save = function(data)
   data['items'] = ui.items:getItems()
   data['containers'] = ui.containers:getItems()
   data['maxDanger'] = tonumber(ui.maxDangerPanel.value:getText())
+  data['smartLooting'] = ui.smartLootingPanel.value:getText()
   data['minCapacity'] = tonumber(ui.minCapacityPanel.value:getText())
   data['everyItem'] = ui.everyItem:isOn()
 end
@@ -257,10 +277,49 @@ end
 
 onTextMessage(function(mode, text)
   if TargetBot.isOff() then return end
-  if #TargetBot.Looting.list == 0 then return end
-  if string.find(text:lower(), "you are not the owner") then -- if we are not the owners of corpse then its a waste of time to try to loot it
-    table.remove(TargetBot.Looting.list, #TargetBot.Looting.list)
+  local lowerText = text:lower()
+
+  if string.find(lowerText, "you are not the owner", 1, true) then
+    if #TargetBot.Looting.list > 0 then
+      table.remove(TargetBot.Looting.list, #TargetBot.Looting.list)
+    end
+    return
   end
+
+  -- Only process loot messages
+  if not string.find(lowerText, "loot", 1, true) then
+    return
+  end
+
+  local itemsKeywords = string.split(
+    ui.smartLootingPanel.value:getText():lower():trim(),
+    ","
+  )
+
+  local matched = false
+  local hasKeywords = false
+  for _, keyword in ipairs(itemsKeywords) do
+    keyword = keyword:trim()
+
+    if keyword ~= "" then
+      hasKeywords = true
+      if string.find(lowerText, keyword, 1, true) then
+        matched = true
+        break
+      end
+    end
+  end
+  if not hasKeywords then
+    matched = true
+  end
+
+  updateSmartLoot(matched)
+
+  -- if matched then
+  --   modules.game_textmessage.displayGameMessage("loot message: " .. text)
+  -- else
+  --   modules.game_textmessage.displayGameMessage("skip loot message: " .. text)
+  -- end
 end)
 
 TargetBot.Looting.lootItem = function(lootContainers, item)
@@ -293,13 +352,13 @@ onCreatureDisappear(function(creature)
   if isInPz() then return end
   if not TargetBot.isOn() then return end
   if not creature:isMonster() then return end
+  local name = creature:getName()
   local config = TargetBot.Creature.calculateParams(creature, {}) -- return {craeture, config, danger, priority}
   if not config.config or config.config.dontLoot then
     return
   end
   local pos = player:getPosition()
   local mpos = creature:getPosition()
-  local name = creature:getName()
   if pos.z ~= mpos.z or math.max(math.abs(pos.x-mpos.x), math.abs(pos.y-mpos.y)) > 6 then return end
   schedule(20, function() -- check in 20ms if there's container (dead body) on that tile
     if not containers[1] then return end
@@ -309,7 +368,13 @@ onCreatureDisappear(function(creature)
     local container = tile:getTopUseThing()
     if not container or not container:isContainer() then return end
     if not findPath(player:getPosition(), mpos, 6, {ignoreNonPathable=true, ignoreCreatures=true, ignoreCost=true}) then return end
-    table.insert(TargetBot.Looting.list, {pos=mpos, creature=name, container=container:getId(), added=now, tries=0})
+    if smartLootEnabled then
+      table.insert(TargetBot.Looting.list, {pos=mpos, creature=name, container=container:getId(), added=now, tries=0})
+      -- modules.game_textmessage.displayGameMessage("lets loot")
+      container:setMarked('#b1ec03')
+    else
+      -- modules.game_textmessage.displayGameMessage("skip loot")
+    end
 
     table.sort(TargetBot.Looting.list, function(a,b) 
       a.dist = distanceFromPlayer(a.pos)
@@ -317,6 +382,5 @@ onCreatureDisappear(function(creature)
 
       return a.dist > b.dist
     end)
-    container:setMarked('#000088')
   end)
 end)

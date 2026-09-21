@@ -3,7 +3,7 @@
     "items": [
       {
         "count": 1,
-        "id": 3322
+        "id": 3286
       },
       {
         "count": 1,
@@ -35,10 +35,6 @@
       },
       {
         "count": 1,
-        "id": 8043
-      },
-      {
-        "count": 1,
         "id": 3428
       },
       {
@@ -54,8 +50,9 @@
         "id": 3386
       }
     ],
-    "maxDanger": 10,
     "minCapacity": 10,
+    "maxDanger": 11,
+    "smartLooting": "mace,cheese,sabre",
     "containers": [
       {
         "count": 1,
@@ -71,36 +68,28 @@
   "targeting": [
     {
       "useSpellAttack": true,
-      "useRuneAttack": false,
-      "minMana": 40,
-      "avoidAttacks": false,
-      "groupAttackTargets": 2,
-      "groupAttackSpell": "exori gran",
-      "danger": 1,
-      "runeAttackDelay": 2000,
-      "lureCavebot": true,
-      "dontLoot": false,
-      "useGroupAttackRune": false,
-      "groupRuneAttackRadius": 1,
-      "groupAttackIgnorePlayers": false,
       "maxDistance": 10,
       "groupAttackIgnoreParty": false,
-      "lureCount": 2,
-      "useGroupAttack": true,
-      "groupRuneAttackTargets": 2,
-      "attackSpell": "exori hur",
-      "groupAttackRune": 0,
-      "groupAttackRadius": 1,
-      "keepDistanceRange": 1,
-      "groupRuneAttackDelay": 5000,
-      "priority": 1,
-      "attackRune": 0,
       "groupAttackDelay": 2000,
-      "minManaGroup": 350,
-      "lure": false,
-      "keepDistance": false,
-      "attackSpellDelay": 2096,
+      "minMana": 40,
+      "avoidAttacks": false,
+      "attackSpell": "exori hur",
       "chase": true,
+      "groupAttackSpell": "exori gran",
+      "danger": 1,
+      "keepDistanceRange": 1,
+      "useGroupAttack": true,
+      "lureCount": 1,
+      "minManaGroup": 350,
+      "priority": 1,
+      "keepDistance": false,
+      "lureCavebot": false,
+      "dontLoot": false,
+      "attackSpellDelay": 2096,
+      "lure": false,
+      "groupAttackRadius": 1,
+      "groupAttackTargets": 2,
+      "groupAttackIgnorePlayers": false,
       "name": "*",
       "regex": "^.*$"
     }
