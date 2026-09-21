@@ -116,7 +116,6 @@ if type(storage.manaTrain) ~= "table" then
 end
 
 local manatrainmacro = macro(1000, function()
-  if TargetBot and TargetBot.isActive() then return end -- pause when attacking
   local mana = math.min(100, math.floor(100 * (player:getMana() / player:getMaxMana())))
   if storage.manaTrain.max >= mana and mana >= storage.manaTrain.min then
     say(storage.manaTrain.text)
