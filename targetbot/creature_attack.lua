@@ -46,8 +46,8 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
     local nearbyCreatures = g_map.getSpectatorsInRange(
       pos,
       false,
-      7,
-      7
+      4,
+      4
     )
 
     for _, creature in ipairs(nearbyCreatures) do
