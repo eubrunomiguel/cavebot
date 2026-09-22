@@ -17,7 +17,11 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
   -- attacks
   local mana = player:getMana()
 
-  if config.useGroupAttack and config.groupAttackSpell:len() > 1 and mana > config.minManaGroup then
+  -- 1. Group attack spell has the highest priority.
+  local groupAttackConfigured = config.useGroupAttack and config.groupAttackSpell:len() > 1
+  local canAffordGroupAttack = mana > config.minManaGroup
+
+  if groupAttackConfigured then
     local pos = player:getPosition()
 
     -- Count monsters within the configured attack radius
@@ -53,8 +57,16 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
       end
     end
 
-    -- Enough monsters and no players nearby
+    -- The group attack is the right spell here only when there are enough
+    -- monsters and no other player is nearby.
     if monsters >= config.groupAttackTargets and not playerAround then
+      -- We cannot afford the group attack: conserve mana instead of spending it
+      -- on the single-target spell. This is the ONLY case where we hold back --
+      -- mana being the specific blocker for the group attack.
+      if not canAffordGroupAttack then
+        return
+      end
+
       if TargetBot.sayAttackSpell(
           config.groupAttackSpell,
           config.groupAttackDelay
@@ -64,39 +76,20 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
     end
   end
 
-  if config.useGroupAttackRune and config.groupAttackRune > 100 then
-    local creatures = g_map.getSpectatorsInRange(creature:getPosition(), false, config.groupRuneAttackRadius, config.groupRuneAttackRadius)
-    local playersAround = false
-    local monsters = 0
-    for _, creature in ipairs(creatures) do
-      if not creature:isLocalPlayer() and creature:isPlayer() and (not config.groupAttackIgnoreParty or creature:getShield() <= 2) then
-        playersAround = true
-      elseif creature:isMonster() then
-        monsters = monsters + 1
-      end
-    end
-    if monsters >= config.groupRuneAttackTargets and (not playersAround or config.groupAttackIgnorePlayers) then
-      if TargetBot.useAttackItem(config.groupAttackRune, 0, creature, config.groupRuneAttackDelay) then
-        return
-      end
-    end
-  end
+  -- 2. Single-target attack spell.
+  --    If the group attack was skipped for a reason other than mana (not enough
+  --    targets, a player nearby, or it is simply not configured), we fall through
+  --    and the single-target spell is still allowed.
   if config.useSpellAttack
       and config.attackSpell:len() > 1
       and mana > config.minMana
       and g_game.getAttackingCreature()
-      and g_game.getAttackingCreature():isMonster()
-      and storage.isChasing then
+      and g_game.getAttackingCreature():isMonster() then
 
     if TargetBot.sayAttackSpell(
         config.attackSpell,
         config.attackSpellDelay
       ) then
-      return
-    end
-  end
-  if config.useRuneAttack and config.attackRune > 100 then
-    if TargetBot.useAttackItem(config.attackRune, 0, creature, config.attackRuneDelay) then
       return
     end
   end
