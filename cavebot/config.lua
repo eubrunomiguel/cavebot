@@ -18,6 +18,7 @@ CaveBot.Config.setup = function()
   add("useDelay", "Delay after use", 400)
   add("talkDelay", "Talk delay", 1000)
   add("npcSellDelay", "NPC sell delay", true)
+  add("maxDistance", "Max distance", 40)
 end
 
 CaveBot.Config.show = function()
