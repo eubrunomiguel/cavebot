@@ -105,8 +105,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
           toBuy = math.min(100, toBuy)
 
           NPC.buy(id, toBuy)
-
-          modules.game_textmessage.displayGameMessage("BuySupplies: bought " .. toBuy .. "x " .. id)
+          CaveBot.delay(1000)
           return "retry"
         end
       end
