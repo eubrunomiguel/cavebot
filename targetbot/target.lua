@@ -105,7 +105,7 @@ config = Config.setup("targetbot_configs", configWidget, "json", function(name, 
   if not data then
     ui.status.right:setText("Off")
     return targetbotMacro.setOff() 
-  end
+      end
   TargetBot.Creature.resetConfigs()
   for _, value in ipairs(data["targeting"] or {}) do
     TargetBot.Creature.addConfig(value)
