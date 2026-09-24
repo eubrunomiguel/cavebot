@@ -6,16 +6,11 @@ CaveBot.Extensions.SupplyCheck.setup = function()
     local label = data[1]:trim()
 
     if Supplies.hasEnough() then
-      modules.game_textmessage.displayGameMessage(
-        "[SupplyCheck]: Supplies OK, going to label: " .. label
-      )
-
+      BotInfo.message("[SupplyCheck]: Supplies OK, going to label: " .. label)
       return CaveBot.gotoLabel(label)
     end
 
-    modules.game_textmessage.displayGameMessage(
-      "[SupplyCheck]: Not enough supplies, proceeding."
-    )
+    BotInfo.message("[SupplyCheck]: Not enough supplies, proceeding.")
 
     return true
   end)

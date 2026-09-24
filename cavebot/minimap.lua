@@ -1,9 +1,5 @@
 local minimap = modules.game_minimap.minimapWidget
 
-local function displayMessage(text)
-  modules.game_textmessage.displayGameMessage(text)
-end
-
 local function parseGotoPos(value)
   if type(value) ~= "string" then return nil end
   local x, y, z = value:match("^%s*(%-?%d+)%s*,%s*(%-?%d+)%s*,%s*(%-?%d+)%s*$")
@@ -49,22 +45,22 @@ minimap.onMouseRelease = function(widget,pos,button)
       CaveBot.save()
 
       if not prevPos then
-        displayMessage("Waypoint added.")
+        BotInfo.message("Waypoint added.")
         return
       end
 
       if prevPos.z ~= mapPos.z then
-        displayMessage("Waypoint added (different floor, distance not measured).")
+        BotInfo.message("Waypoint added (different floor, distance not measured).")
         return
       end
 
       local steps = math.max(math.abs(prevPos.x - mapPos.x), math.abs(prevPos.y - mapPos.y))
       local maxDistance = CaveBot.Config.get("maxDistance")
 
-      displayMessage("Waypoint added, " .. steps .. " steps from the last waypoint.")
+      BotInfo.message("Waypoint added, " .. steps .. " steps from the last waypoint.")
 
       if steps > maxDistance then
-        displayMessage("WARNING: Waypoint is " .. steps .. " steps from the last waypoint, exceeding maxDistance (" .. maxDistance .. ").")
+        BotInfo.message("WARNING: Waypoint is " .. steps .. " steps from the last waypoint, exceeding maxDistance (" .. maxDistance .. ").")
       end
     end)
     menu:display(pos)

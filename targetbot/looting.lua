@@ -314,12 +314,6 @@ onTextMessage(function(mode, text)
   end
 
   updateSmartLoot(matched)
-
-  -- if matched then
-  --   modules.game_textmessage.displayGameMessage("loot message: " .. text)
-  -- else
-  --   modules.game_textmessage.displayGameMessage("skip loot message: " .. text)
-  -- end
 end)
 
 TargetBot.Looting.lootItem = function(lootContainers, item)
@@ -370,10 +364,7 @@ onCreatureDisappear(function(creature)
     if not findPath(player:getPosition(), mpos, 6, {ignoreNonPathable=true, ignoreCreatures=true, ignoreCost=true}) then return end
     if smartLootEnabled then
       table.insert(TargetBot.Looting.list, {pos=mpos, creature=name, container=container:getId(), added=now, tries=0})
-      -- modules.game_textmessage.displayGameMessage("lets loot")
       container:setMarked('#b1ec03')
-    else
-      -- modules.game_textmessage.displayGameMessage("skip loot")
     end
 
     table.sort(TargetBot.Looting.list, function(a,b) 

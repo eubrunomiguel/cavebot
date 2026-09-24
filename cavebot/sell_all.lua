@@ -13,18 +13,18 @@ CaveBot.Extensions.SellAll.setup = function()
     storage.cavebotSell = storage.cavebotSell or {}
 
     if not npc then 
-      modules.game_textmessage.displayGameMessage("[SellAll]: NPC not found! skipping")
+      BotInfo.message("[SellAll]: NPC not found! skipping")
       return false 
     end
 
     if retries > 10 then
-      modules.game_textmessage.displayGameMessage("[SellAll]: can't sell, skipping")
+      BotInfo.message("[SellAll]: can't sell, skipping")
       return false
     end
 
     if freecap() == sellAllCap then
       sellAllCap = 0 
-      modules.game_textmessage.displayGameMessage("[SellAll]: Sold everything, proceeding")
+      BotInfo.message("[SellAll]: Sold everything, proceeding")
       return true
     end
 
@@ -54,9 +54,9 @@ CaveBot.Extensions.SellAll.setup = function()
     modules.game_npctrade.sellAll(wait, exceptions)
 
     if wait then
-      modules.game_textmessage.displayGameMessage("[SellAll]: Sold All with delay")
+      BotInfo.message("[SellAll]: Sold All with delay")
     else
-      modules.game_textmessage.displayGameMessage("[SellAll]: Sold All without delay")
+      BotInfo.message("[SellAll]: Sold All without delay")
     end
 
     return "retry"

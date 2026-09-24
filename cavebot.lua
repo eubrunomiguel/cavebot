@@ -4,6 +4,18 @@
 local cavebotTab = "Cave"
 local targetingTab = "Target"
 
+local tabName = "Bot Info"
+
+if not modules.game_console.getTab(tabName) then
+  modules.game_console.addTab(tabName, true)
+  modules.game_console.addText("Console initialized", modules.game_console.SpeakTypesSettings, tabName, "")
+end
+
+BotInfo = {} -- global namespace
+BotInfo.message = function(text)
+  modules.game_console.addText(text, modules.game_console.SpeakTypesSettings, tabName, "")
+end
+
 setDefaultTab(cavebotTab)
 CaveBot = {} -- global namespace
 CaveBot.Extensions = {}

@@ -41,7 +41,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
     end
 
     if retries > 50 then
-      modules.game_textmessage.displayGameMessage("BuySupplies: Too many tries, can't buy")
+      BotInfo.message("BuySupplies: Too many tries, can't buy")
       return false
     end
 
@@ -62,9 +62,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
     end
 
     if not needsSupplies then
-      modules.game_textmessage.displayGameMessage(
-        "BuySupplies: supplies already met, skipping"
-      )
+      BotInfo.message("BuySupplies: supplies already met, skipping")
       NPC.closeTrade()
       NPC.say("bye")
       return true
@@ -72,7 +70,7 @@ CaveBot.Extensions.BuySupplies.setup = function()
 
     local npc = getCreatureByName(npcName)
     if not npc then
-      modules.game_textmessage.displayGameMessage("BuySupplies: NPC not found")
+      BotInfo.message("BuySupplies: NPC not found")
       return false
     end
 
