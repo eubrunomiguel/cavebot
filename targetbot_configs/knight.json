@@ -3,10 +3,6 @@
     "items": [
       {
         "count": 1,
-        "id": 3286
-      },
-      {
-        "count": 1,
         "id": 7430
       },
       {
@@ -51,8 +47,8 @@
       }
     ],
     "minCapacity": 10,
-    "maxDanger": 11,
-    "smartLooting": "mace,cheese,sabre",
+    "maxDanger": 10,
+    "smartLooting": "dragon scale mail,dragon hammer,dragon shield,dragon slayer,knight,crown,haste,royal,serpent,tower,dragonbone,war axe",
     "containers": [
       {
         "count": 1,
@@ -69,27 +65,25 @@
     {
       "useSpellAttack": true,
       "maxDistance": 10,
-      "groupAttackIgnoreParty": false,
       "groupAttackDelay": 2000,
       "minMana": 40,
       "avoidAttacks": false,
       "attackSpell": "exori hur",
-      "chase": true,
-      "groupAttackSpell": "exori gran",
-      "danger": 1,
+      "groupAttackTargets": 2,
+      "groupAttackRadius": 1,
       "keepDistanceRange": 1,
-      "useGroupAttack": true,
-      "lureCount": 1,
-      "minManaGroup": 350,
-      "priority": 1,
       "keepDistance": false,
-      "lureCavebot": false,
+      "groupAttackSpell": "exori gran",
+      "useGroupAttack": true,
+      "chase": true,
+      "danger": 1,
+      "lureCavebot": true,
       "dontLoot": false,
       "attackSpellDelay": 2096,
       "lure": false,
-      "groupAttackRadius": 1,
-      "groupAttackTargets": 2,
-      "groupAttackIgnorePlayers": false,
+      "priority": 1,
+      "minManaGroup": 350,
+      "lureCount": 2,
       "name": "*",
       "regex": "^.*$"
     }
