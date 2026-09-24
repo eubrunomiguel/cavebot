@@ -13,7 +13,11 @@ local config = SuppliesConfig
 
 -- Convert old item1/item2/etc. config to the new format
 local function convertOldConfig(config)
-  if config and config.items then
+  if type(config) ~= "table" then
+    return { items = {} }
+  end
+
+  if config.items then
     return config
   end
 
@@ -48,12 +52,12 @@ local function convertOldConfig(config)
     config.item6Max
   }
 
-  local maxes = {
-    config.item1Max,
-    config.item2Max,
-    config.item3Max,
-    config.item4Max,
-    config.item5Max,
+  local emergs = {
+    config.item1Emerg,
+    config.item2Emerg,
+    config.item3Emerg,
+    config.item4Emerg,
+    config.item5Emerg,
     config.item6Emerg
   }
 
@@ -332,16 +336,7 @@ Supplies.setConfig = function(data)
 
   SuppliesConfig = data
 
-  if not SuppliesConfig then
-    SuppliesConfig = {
-      items = {}
-    }
-  end
-
-  -- Convert old profile-based/default config if necessary
-  SuppliesConfig = convertOldConfig(
-    SuppliesConfig
-  )
+  SuppliesConfig = convertOldConfig(SuppliesConfig)
 
   config = SuppliesConfig
 
