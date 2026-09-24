@@ -2,32 +2,32 @@
   "hpitem1": {
     "max": 75,
     "title": "HP%",
+    "subType": 0,
+    "item": 0,
     "min": 0,
-    "item": 7643,
-    "on": false,
-    "subType": 0
+    "on": false
   },
   "noMonsterHasteSpell": "utani tempo hur",
   "foodItems": [
     {
-      "id": 3582,
-      "count": 1
+      "count": 1,
+      "id": 3582
     },
     {
-      "id": 3577,
-      "count": 1
+      "count": 1,
+      "id": 3577
     },
     {
-      "id": 3725,
-      "count": 100
+      "count": 100,
+      "id": 3725
     },
     {
-      "id": 3729,
-      "count": 24
+      "count": 24,
+      "id": 3729
     },
     {
-      "id": 3583,
-      "count": 3
+      "count": 3,
+      "id": 3583
     }
   ],
   "healing2": {
@@ -43,142 +43,65 @@
   "manaitem2": {
     "max": 50,
     "title": "MP%",
+    "subType": 0,
+    "item": 0,
     "min": 0,
-    "item": 3157,
-    "on": false,
-    "subType": 0
+    "on": false
+  },
+  "cavebotActionPositions": {
+    "oken_frost_updated": 9
   },
   "hpHuntMin": 100,
   "manaitem1": {
-    "max": 49,
+    "max": 70,
     "title": "MP%",
-    "min": 0,
+    "subType": 0,
     "item": 268,
-    "on": false,
-    "subType": 0
+    "min": 0,
+    "on": true
   },
   "hpitem2": {
-    "max": 75,
+    "max": 65,
     "title": "HP%",
+    "subType": 0,
+    "item": 7643,
     "min": 0,
-    "item": 239,
-    "on": false,
-    "subType": 0
-  },
-  "depositItem4Price": 30000,
-  "autoTradeMessage": "Buy Dark Trinity Mace or Demonbone",
-  "manaId": 268,
-  "hpId": 7643,
-  "manaEmergency": 50,
-  "manaShield": "utamo vita",
-  "hasteSpell": "utani hur",
-  "lastPosition": {
-    "y": 32222,
-    "x": 32344,
-    "z": 7
-  },
-  "_macros": {
-    "": false,
-    "Bless": false,
-    "drop items": false,
-    "Stack items": true,
-    "smart haste": false,
-    "hunt - haste": false,
-    "Emergency Escape": false,
-    "Utani Tempo Hur": false,
-    "Disable Target On Low Pot": false,
-    "Anti Kick": true,
-    "hunt - anti paralyze": false,
-    "anti paralyze": false,
-    "eat food": true,
-    "haste": false,
-    "Debug Skulls": false,
-    "Depot Depositor": false,
-    "Disable Target On Low Mana": true,
-    "Exchange money": true,
-    "Soft": false,
-    "Cast": false,
-    "Send message on trade": false
-  },
-  "cavebotSell": [
-    {
-      "id": 3457,
-      "count": 1
-    },
-    {
-      "id": 3192,
-      "count": 30
-    },
-    {
-      "id": 3053,
-      "count": 1
-    },
-    {
-      "id": 3043,
-      "count": 3
-    }
-  ],
-  "depositItem4": 3392,
-  "ingame_macros": "macro(56000, \"Soft\",  function()\n  say(\"!soft\")\nend)\n\nmacro(60000, \"Bless\",  function()\n  say(\"!bless\")\nend)\n\nmacro(64000, \"Cast\",  function()\n  say(\"!cast on\")\nend)",
-  "depositItem1Price": 8000,
-  "hpTarget": 500,
-  "manaTarget": 2000,
-  "depositItem2": 7402,
-  "_configs": {
-    "targetbot_configs": {
-      "selected": "knight",
-      "enabled": false
-    },
-    "cavebot_configs": {
-      "selected": "oken_frost_updated",
-      "enabled": false
-    }
-  },
-  "healing1": {
-    "max": 50,
-    "title": "HP%",
-    "on": true,
-    "min": 0,
-    "text": "exana mort"
-  },
-  "SuppliesConfig": {
-    "supplies": {
-      "currentProfile": "Default",
-      "Default": {
-        "items": [
-
-        ]
-      }
-    }
+    "on": true
   },
   "depositItem2Price": 15000,
   "emergencySpell": "utani tempo hur",
-  "manaHuntMin": 350,
-  "dropItems": [
-    {
-      "count": 1,
-      "id": 283
+  "bestHeal": 0,
+  "analyzers": {
+    "lootChannel": true,
+    "customPrices": [
+
+    ],
+    "trackedLoot": {
+      "3428": 41517,
+      "3386": 42485,
+      "3392": 42385,
+      "7402": 41236
     },
-    {
-      "count": 1,
-      "id": 284
-    },
-    {
-      "count": 1,
-      "id": 285
+    "trackedBoss": [
+
+    ],
+    "rarityFrames": true,
+    "outfits": {
+      "Frost Dragon": {
+        "feet": 0,
+        "legs": 0,
+        "addons": 0,
+        "type": 248,
+        "body": 0,
+        "auxType": 0,
+        "head": 0
+      }
     }
-  ],
-  "antiParalyze": "utani hur",
-  "depositItem3": 3386,
-  "manaTrain": {
-    "max": 100,
-    "title": "MP%",
-    "on": false,
-    "min": 0,
-    "text": "utevo lux"
   },
-  "depositItem3Price": 40000,
-  "smartLooting": false,
+  "bestHit": 459,
+  "cavebotActionLastConfig": "oken_frost_updated",
+  "manaId": 268,
+  "hpId": 7643,
   "autoEquip": [
     {
       "item1": 3052,
@@ -209,5 +132,100 @@
       "slot": 0
     }
   ],
-  "hp": 2
+  "manaTrain": {
+    "max": 100,
+    "title": "MP%",
+    "on": false,
+    "min": 0,
+    "text": "utevo lux"
+  },
+  "antiParalyze": "utani hur",
+  "lastPosition": {
+    "y": 32222,
+    "x": 32344,
+    "z": 7
+  },
+  "depositItem3": 3386,
+  "manaEmergency": 50,
+  "cavebotSell": [
+
+  ],
+  "ingame_macros": "macro(56000, \"Soft\",  function()\n  say(\"!soft\")\nend)\n\nmacro(60000, \"Bless\",  function()\n  say(\"!bless\")\nend)\n\nmacro(64000, \"Cast\",  function()\n  say(\"!cast on\")\nend)",
+  "manaTarget": 2000,
+  "depositItem1Price": 8000,
+  "smartLooting": true,
+  "manaShield": "utamo vita",
+  "_configs": {
+    "cavebot_configs": {
+      "enabled": false,
+      "selected": "oken_frost_updated"
+    },
+    "targetbot_configs": {
+      "enabled": false,
+      "selected": "knight"
+    }
+  },
+  "healing1": {
+    "max": 55,
+    "title": "HP%",
+    "on": true,
+    "min": 0,
+    "text": "exana mort"
+  },
+  "SuppliesConfig": {
+    "supplies": {
+      "currentProfile": "Default",
+      "Default": {
+        "items": [
+
+        ]
+      }
+    }
+  },
+  "depositItem4Price": 30000,
+  "autoTradeMessage": "Buy Dark Trinity Mace or Demonbone",
+  "manaHuntMin": 350,
+  "dropItems": [
+    {
+      "id": 283,
+      "count": 1
+    },
+    {
+      "id": 284,
+      "count": 1
+    },
+    {
+      "id": 285,
+      "count": 1
+    }
+  ],
+  "depositItem3Price": 40000,
+  "hpTarget": 500,
+  "hp": 2,
+  "_macros": {
+    "": false,
+    "Bless": true,
+    "drop items": false,
+    "Stack items": true,
+    "smart haste": true,
+    "hunt - haste": false,
+    "hunt - anti paralyze": false,
+    "Send message on trade": false,
+    "Disable Target On Low Pot": false,
+    "Soft": false,
+    "Emergency Escape": true,
+    "Disable Target On Low Mana": true,
+    "eat food": true,
+    "haste": false,
+    "Debug Skulls": false,
+    "Depot Depositor": false,
+    "anti paralyze": false,
+    "Exchange money": true,
+    "Anti Kick": true,
+    "Cast": true,
+    "Utani Tempo Hur": false
+  },
+  "depositItem4": 3392,
+  "hasteSpell": "utani hur",
+  "depositItem2": 7402
 }
