@@ -41,7 +41,7 @@ dofile("/cavebot/supply_then.lua")
 dofile("/cavebot/no_supply_then.lua")
 dofile("/cavebot/target_set.lua")
 -- main cavebot file, must be last
-dofile("/cavebot/cavebot.lua")
+dofile("/cavebot/cavebot_main.lua")
 
 setDefaultTab(targetingTab)
 TargetBot = {} -- global namespace

@@ -8,6 +8,58 @@ local ui = UI.createWidget("CaveBotPanel")
 ui.list = ui.listPanel.list -- shortcut
 CaveBot.actionList = ui.list
 
+-- Persistent action position (storage backed) ---------------------------------
+-- The focused action is remembered per config file, so that toggling CaveBot
+-- on/off (or reloading/restarting the client) resumes at the same action
+-- instead of jumping back to the first one.
+--
+-- Switching to a *different* config, however, resets the position back to the
+-- first action (index 0) -- see lastSelectedConfig below.
+local actionPositions = storage.cavebotActionPositions
+if type(actionPositions) ~= "table" then
+  actionPositions = {}
+  storage.cavebotActionPositions = actionPositions
+end
+
+local lastConfig = ""
+local currentActionIndex = nil
+local lastPersistedIndex = nil
+
+-- The config that was selected the last time a config was loaded. Used to
+-- detect when the user switches to a different config (e.g. a different entry
+-- in _configs), in which case we reset the remembered position to 0.
+local lastSelectedConfig = storage.cavebotActionLastConfig
+if type(lastSelectedConfig) ~= "string" or lastSelectedConfig == "" then
+  lastSelectedConfig = nil
+end
+
+-- read the index of the currently focused action (nil if there is none)
+local function getFocusedActionIndex()
+  local focused = ui.list:getFocusedChild()
+  if not focused then return nil end
+  local index = ui.list:getChildIndex(focused)
+  if type(index) ~= "number" or index < 0 then return nil end
+  return index
+end
+
+-- focus an action by index, returns false if the index is invalid
+local function focusActionIndex(index)
+  if type(index) ~= "number" then return false end
+  local ok, child = pcall(function() return ui.list:getChildByIndex(index) end)
+  if not ok or not child then return false end
+  ui.list:focusChild(child)
+  return true
+end
+
+-- remember the position in storage, but only when it actually changed
+local function persistActionIndex(index)
+  if index == nil or lastConfig == "" then return end
+  if index == lastPersistedIndex then return end
+  lastPersistedIndex = index
+  actionPositions[lastConfig] = index
+  storage.cavebotActionPositions = actionPositions
+end
+
 if CaveBot.Editor then
   CaveBot.Editor.setup()
 end
@@ -78,11 +130,15 @@ cavebotMacro = macro(20, function()
   if nextAction > actions then
     nextAction = 1
   end
-  ui.list:focusChild(ui.list:getChildByIndex(nextAction))
+  local nextChild = ui.list:getChildByIndex(nextAction)
+  if nextChild then
+    ui.list:focusChild(nextChild)
+    currentActionIndex = nextAction
+    persistActionIndex(nextAction)
+  end
 end)
 
 -- config, its callback is called immediately, data can be nil
-local lastConfig = ""
 config = Config.setup("cavebot_configs", configWidget, "cfg", function(name, enabled, data)
   if enabled and CaveBot.Recorder.isOn() then
     CaveBot.Recorder.disable()
@@ -90,9 +146,36 @@ config = Config.setup("cavebot_configs", configWidget, "cfg", function(name, ena
     return    
   end
 
-  local currentActionIndex = ui.list:getChildIndex(ui.list:getFocusedChild())
+  -- Switching to a different config should restart from the first action, so
+  -- forget the position remembered for the config we are switching to. This is
+  -- what makes the selected config in _configs drive a reset to 0, while
+  -- on/off toggling and restarting the *same* config still resume.
+  if name and name ~= "" and name ~= lastSelectedConfig then
+    actionPositions[name] = nil
+    lastSelectedConfig = name
+    storage.cavebotActionLastConfig = name
+  end
+
+  -- remember where the config we are leaving was (before the list is rebuilt),
+  -- and figure out where the config we are loading should resume from.
+  -- both are kept in storage, so it also survives a reload/restart.
+  local prevIndex = getFocusedActionIndex()
+  if prevIndex ~= nil and lastConfig ~= "" then
+    actionPositions[lastConfig] = prevIndex
+    storage.cavebotActionPositions = actionPositions
+  end
+  local restoreIndex = actionPositions[name]
+  if restoreIndex == nil and lastConfig == name then
+    restoreIndex = prevIndex
+  end
+
   ui.list:destroyChildren()
-  if not data then return cavebotMacro.setOff() end
+  if not data then
+    cavebotMacro.setOff()
+    currentActionIndex = nil
+    lastPersistedIndex = nil
+    return
+  end
   
   local cavebotConfig = nil
   for k,v in ipairs(data) do
@@ -132,10 +215,17 @@ config = Config.setup("cavebot_configs", configWidget, "cfg", function(name, ena
   prevActionResult = true
   cavebotMacro.setOn(enabled)
   cavebotMacro.delay = nil
-  if lastConfig == name then 
-    -- restore focused child on the action list
-    ui.list:focusChild(ui.list:getChildByIndex(currentActionIndex))
+
+  -- restore the action we were on; if the stored index is gone (e.g. the config
+  -- shrank) fall back to the first action
+  if restoreIndex == nil or not focusActionIndex(restoreIndex) then
+    local first = ui.list:getFirstChild()
+    if first then
+      ui.list:focusChild(first)
+    end
   end
+  currentActionIndex = getFocusedActionIndex()
+  lastPersistedIndex = currentActionIndex
   lastConfig = name  
 end)
 
@@ -234,6 +324,43 @@ CaveBot.save = function()
   config.save(data)
 end
 
+-- F12 hotkey: toggle BOTH CaveBot and TargetBot on/off together. ------------
+-- Always active, no configuration option and no storage dependency: F12 is
+-- bound unconditionally. Turning on happens only when both are off; otherwise
+-- the press turns both off. Every toggle is reported through BotInfo.message.
+local function toggleCaveBotAndTargetBotHotkey()
+  local targetOn = TargetBot and TargetBot.isOn and TargetBot.isOn() or false
+  local turningOn = not (CaveBot.isOn() or targetOn)
+
+  if turningOn then
+    CaveBot.setOn()
+    if TargetBot and TargetBot.setOn then
+      TargetBot.setOn()
+    end
+    BotInfo.message("[CaveBot & TargetBot]: ON")
+  else
+    CaveBot.setOff()
+    if TargetBot and TargetBot.setOff then
+      TargetBot.setOff()
+    end
+    BotInfo.message("[CaveBot & TargetBot]: OFF")
+  end
+end
+
+-- bind unconditionally (idempotent: rebinding after a reload is fine)
+g_keyboard.bindKeyDown('F12', toggleCaveBotAndTargetBotHotkey)
+
+-- Kept for backwards compatibility with any existing callers, but the hotkey
+-- can no longer be disabled: it always toggles both bots.
+CaveBot.setHotkeyEnabled = function(enabled)
+  -- no-op on purpose; F12 is always bound above
+  storage.cavebotHotkey = true
+end
+
+CaveBot.isHotkeyEnabled = function()
+  return true
+end
+
 local sellContainer = UI.Container(function(widget, items)
   storage.cavebotSell = items
 end, true, nil, ui.sellExceptions)
@@ -241,8 +368,8 @@ sellContainer:setHeight(70)
 sellContainer:setItems(storage.cavebotSell)
 
 macro(500, "Emergency Escape", function() 
-  if Supplies.hasEmergency() then
-    modules.game_textmessage.displayGameMessage("[Supplies]: Too little supply, turning off target bot")
+  if Supplies.hasEmergency() and TargetBot.isOn() then
+    BotInfo.message("[Supplies]: Too little supply, turning off target bot")
     TargetBot.setOff()
   end
 end)
