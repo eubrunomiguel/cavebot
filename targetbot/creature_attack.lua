@@ -1,3 +1,8 @@
+-- Skull values reported by creature:getSkull()
+local SkullWhite = 3
+local SkullRed = 4
+local SkullBlack = 5
+
 TargetBot.Creature.attack = function(params, targets, isLooting) -- params {config, creature, danger, priority}
   if player:isWalking() then
     lastWalk = now
@@ -52,8 +57,13 @@ TargetBot.Creature.attack = function(params, targets, isLooting) -- params {conf
 
     for _, creature in ipairs(nearbyCreatures) do
       if not creature:isLocalPlayer() and creature:isPlayer() then
+        -- Ignore players we are allowed to hit: white, red or black skull.
+        local skull = creature:getSkull()
+        local isAttackableSkull = skull == SkullWhite or skull == SkullRed or skull == SkullBlack
+        if not isAttackableSkull then
         playerAround = true
         break
+        end
       end
     end
 
