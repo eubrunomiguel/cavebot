@@ -241,11 +241,12 @@ Supplies.getItemsData = function()
   for i, panel in ipairs(CaveBot.SuppliesWindow.items:getChildren()) do
     if panel.id:getItemId() > 100 then
       local id = tostring(panel.id:getItemId())
-
       t[id] = {
         min = panel.min:getValue(),
         max = panel.max:getValue(),
-        emerg = panel.emerg:getValue()
+        emerg = panel.emerg:getValue(),
+        current = player:getItemsCount(panel.id:getItemId()),
+        used = panel.max:getValue() - player:getItemsCount(panel.id:getItemId()),
       }
     end
   end
@@ -314,13 +315,6 @@ Supplies.addSupplyItem = function(id, min, max, emerg)
   widget.min:setText(min or 0)
   widget.max:setText(max or 0)
   widget.emerg:setText(emerg or 0)
-end
-
-
-Supplies.getFullData = function()
-  return {
-    items = Supplies.getItemsData()
-  }
 end
 
 

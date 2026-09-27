@@ -16,6 +16,9 @@ BotInfo.message = function(text)
   modules.game_console.addText(text, modules.game_console.SpeakTypesSettings, tabName, "")
 end
 
+dofile("items.lua")
+dofile("items_ids.lua")
+
 setDefaultTab(cavebotTab)
 CaveBot = {} -- global namespace
 CaveBot.Extensions = {}
@@ -23,6 +26,7 @@ importStyle("/cavebot/cavebot.otui")
 importStyle("/cavebot/config.otui")
 importStyle("/cavebot/editor.otui")
 importStyle("/cavebot/supplies.otui")
+importStyle("/cavebot/analyzer.otui")
 dofile("/cavebot/cavebot_lib.lua")
 dofile("/cavebot/actions.lua")
 dofile("/cavebot/config.lua")
@@ -56,3 +60,6 @@ dofile("/targetbot/looting.lua")
 dofile("/targetbot/walking.lua")
 -- main targetbot file, must be last
 dofile("/targetbot/target.lua")
+
+-- analyzer
+dofile("/cavebot/analyzer.lua")

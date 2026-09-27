@@ -99,6 +99,26 @@ TargetBot.Looting.updateItemsAndContainers = function()
   end
 end
 
+--- List of item ids configured in the loot list (ui.items).
+-- Used by the Analyzer to count how much loot you are carrying.
+-- @return table of item ids
+TargetBot.Looting.getLootItemIds = function()
+  local out = {}
+  if not ui or not ui.items then return out end
+  local ok, list = pcall(function() return ui.items:getItems() end)
+  if not ok or type(list) ~= "table" then return out end
+  for _, item in ipairs(list) do
+    local id = item and item.id
+    if type(id) == "number" and id > 0 then
+      out[id] = {
+        name = ItemIds.getNameById(id),
+        count = player:getItemsCount(id)
+      }
+    end
+  end
+  return out
+end
+
 local waitTill = 0
 local waitingForContainer = nil
 local status = ""

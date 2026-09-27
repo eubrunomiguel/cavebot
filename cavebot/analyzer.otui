@@ -1,0 +1,111 @@
+DualLabel < Label
+  height: 15
+  text-offset: 4 0
+  font: verdana-11px-rounded
+  text-align: left
+  width: 50
+
+  Label
+    id: value
+    anchors.right: parent.right
+    margin-right: 4
+    anchors.verticalCenter: parent.verticalCenter
+    width: 200
+    font: verdana-11px-rounded
+    text-align: right
+    text: 0
+
+AnalyzerPriceLabel < Label
+  background-color: alpha
+  text-offset: 2 0
+  focusable: true
+  height: 16
+
+  $focus:
+    background-color: #00000055
+
+  Button
+    id: remove
+    !text: tr('x')
+    anchors.right: parent.right
+    margin-right: 15
+    width: 15
+    height: 15
+
+AnalyzerListPanel < Panel
+  padding-left: 4
+  padding-right: 4
+  layout:
+    type: verticalBox
+    fit-children: true
+
+
+ListLabel < Label
+  height: 15
+  font: verdana-11px-rounded
+  text-offset: 15 0
+
+AnalyzerItemsPanel < Panel
+  id: List
+  padding: 2
+  layout:
+    type: grid
+    cell-size: 33 33
+    cell-spacing: 1
+    num-columns: 5
+    fit-children: true
+
+AnalyzerLootItem < UIItem
+  opacity: 0.87
+  height: 37
+  margin-left: 1
+  virtual: true
+  background-color: alpha 
+
+  Label
+    id: count
+    font: verdana-11px-rounded
+    color: white
+    opacity: 0.87
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    margin-right: 2
+    text-align: right
+    text: 0
+
+AnalyzerProgressBar < ProgressBar
+  background-color: green
+  height: 5
+  margin-top: 3
+  phantom: false
+  margin-left: 3
+  margin-right: 3
+  border: 1 black
+
+AnalyzerButton < Button
+  height: 22
+  margin-bottom: 2
+  font: verdana-11px-rounded
+  text-offset: 0 4
+
+MainAnalyzerWindow < MiniWindow
+  id: MainAnalyzerWindow
+  text: Analytics Selector
+  height: 293
+  icon: /images/topbuttons/analyzers
+
+  MiniWindowContents
+    padding-left: 5
+    padding-right: 5
+    padding-top: 5
+    layout: verticalBox
+
+MainAnalyzerWindow < MiniWindow  
+  id: HuntingAnalyzerWindow
+  text: Hunt Analyzer
+  icon: /images/topbuttons/analyzers
+
+  MiniWindowContents
+    padding-top: 3
+    layout: verticalBox

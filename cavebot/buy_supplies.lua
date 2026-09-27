@@ -109,10 +109,13 @@ CaveBot.Extensions.BuySupplies.setup = function()
       end
     end
 
-    
+
     NPC.closeTrade()
     NPC.say("bye")
-    modules.game_textmessage.displayGameMessage("BuySupplies: bought everything, proceeding")
+    BotInfo.message("BuySupplies: bought everything, proceeding")
+
+    Analyzer.saveRound()
+
     return true
   end)
 
